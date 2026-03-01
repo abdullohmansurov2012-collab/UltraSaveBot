@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="uz">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +7,14 @@
     <!-- Google Fonts for Modern Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- BoxIcons for icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Custom CSS - FastAPI static mount orqali bog'langan -->
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
-
+    
     <!-- Animated Background Elements -->
     <div class="bg-shape bg-shape-1"></div>
     <div class="bg-shape bg-shape-2"></div>
@@ -41,21 +37,19 @@
             <form id="downloadForm" class="search-box">
                 <div class="input-wrapper">
                     <i class='bx bx-link icon'></i>
-                    <input type="url" id="videoUrl" placeholder="Video havolasini (link) shu yerga kiriting..." required
-                        autocomplete="off">
+                    <input type="url" id="videoUrl" placeholder="Video havolasini (link) shu yerga kiriting..." required autocomplete="off">
                 </div>
                 <button type="submit" class="btn-primary" id="processBtn">
                     <span>Yuklash</span>
                     <i class='bx bx-download'></i>
                 </button>
             </form>
-
+            
             <div class="supported-platforms">
                 <div class="platform"><i class='bx bxl-instagram'></i></div>
                 <div class="platform"><i class='bx bxl-youtube'></i></div>
                 <div class="platform"><i class='bx bxl-tiktok'></i></div>
-                <!-- Likee icon substitute using general icon since bx doesn't have it directly -->
-                <div class="platform"><i class='bx bx-video'></i></div>
+                <div class="platform"><i class='bx bx-video'></i></div> 
             </div>
         </section>
 
@@ -69,24 +63,21 @@
         <section class="results-section glass-panel" id="resultsSection" style="display: none;">
             <div class="video-preview">
                 <div class="thumbnail-wrapper">
-                    <!-- Placeholder image, will be updated via JS -->
-                    <img id="videoThumb"
-                        src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                        alt="Video Thumbnail">
+                    <img id="videoThumb" src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Video Thumbnail">
                     <div class="play-overlay"><i class='bx bx-play'></i></div>
                 </div>
                 <div class="video-info">
-                    <h3 id="videoTitle">Ajoyib video sarlavhasi shu yerda bo'ladi</h3>
-                    <p id="videoSource" class="source-badge"><i class='bx bxl-instagram'></i> Instagram</p>
+                    <h3 id="videoTitle">Video topildi</h3>
+                    <p id="videoSource" class="source-badge"><i class='bx bxl-instagram'></i> Video</p>
                 </div>
             </div>
 
             <h4 class="qualities-title">Sifatni tanlang:</h4>
-
+            
             <div class="quality-grid" id="qualityList">
-                <!-- Quality items will be injected here by JS -->
+                <!-- Sifatlar JS orqali kiritiladi -->
             </div>
-
+            
             <button class="btn-secondary" id="newSearchBtn">
                 <i class='bx bx-refresh'></i>
                 <span>Boshqa video yuklash</span>
@@ -102,8 +93,7 @@
         <p><i class='bx bx-bot'></i> UltraSaveBot uchun tayyorlangan</p>
     </footer>
 
-    <!-- Custom JS -->
-    <script src="script.js"></script>
+    <!-- Custom JS - FastAPI static mount orqali bog'langan -->
+    <script src="/static/script.js"></script>
 </body>
-
 </html>

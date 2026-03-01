@@ -1,24 +1,36 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import yt_dlp
 import uvicorn
+import os
 
 app = FastAPI(title="UltraSave Video Downloader API")
 
 # Allow CORS for the frontend HTML file to interact
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins (good for local testing)
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Serve static files (CSS, JS) from the current directory
+# Render will look for these in the root of the repo
+app.mount("/static", StaticFiles(directory="."), name="static")
+
 class VideoRequest(BaseModel):
     url: str
 
+@app.get("/")
+async def read_index():
+    return FileResponse('index.html')
+
 def extract_video_info(url: str):
+    # ... (keeping existing logic)
     # Improved options to get more formats and better luck with merged streams
     ydl_opts = {
         'quiet': True,

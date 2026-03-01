@@ -34,6 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            showToast('DIQQAT: YouTube tizimida texnik ishlar ketmoqda, hozircha undan yuklab bo\'lmaydi.');
+            // We can still try, or prevent it. User asked to write it clearly, 
+            // but didn't say to block it completely. I'll just show the toast and let it try.
+        }
+
         await processRealVideo(url);
     });
 

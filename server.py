@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import yt_dlp
@@ -9,7 +8,7 @@ import os
 
 app = FastAPI(title="UltraSave Video Downloader API")
 
-# Allow CORS for the frontend HTML file to interact
+# Allow CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,19 +17,41 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve static files (CSS, JS) from the current directory
-# Render will look for these in the root of the repo
-app.mount("/static", StaticFiles(directory="."), name="static")
-
 class VideoRequest(BaseModel):
     url: str
+
+# --- ROUTES FOR FRONTEND ---
 
 @app.get("/")
 async def read_index():
     return FileResponse('index.html')
 
+@app.get("/style.css")
+async def read_css():
+    return FileResponse('style.css')
+
+@app.get("/script.js")
+async def read_js():
+    return FileResponse('script.js')
+
+# --- API ROUTES ---
+
+@app.post("/api/download")
+async def download_video(req: VideoRequest):
+    try:
+        data = extract_video_info(req.url)
+        return data
+    except ValueError as ve:
+        error_msg = str(ve)
+        if "Sign in to confirm you're not a bot" in error_msg:
+            error_msg = "YouTube vaqtinchalik blokladi. Iltimos, bir ozdan so'ng qayta urinib ko'ring yoki boshqa havola tashlang."
+        elif "Requested format is not available" in error_msg:
+            error_msg = "Siz so'ragan format ushbu video uchun mavjud emas."
+        raise HTTPException(status_code=400, detail=error_msg)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
 def extract_video_info(url: str):
-    # ... (keeping existing logic)
     # Improved options to get more formats and better luck with merged streams
     ydl_opts = {
         'quiet': True,
@@ -116,7 +137,7 @@ def extract_video_info(url: str):
                      })
                              
             if not qualities:
-                raise ValueError("Could not find any downloadable video links.")
+                raise ValueError("Video yuklash uchun havolalar topilmadi.")
                 
             # Sort qualities by height usually (rudimentary sort)
             # Qualities list is ready
@@ -129,24 +150,7 @@ def extract_video_info(url: str):
             }
             
     except Exception as e:
-        print(f"Error extracting {url}: {e}")
         raise ValueError(str(e))
 
-@app.post("/api/download")
-async def download_video(req: VideoRequest):
-    try:
-        data = extract_video_info(req.url)
-        return data
-    except ValueError as ve:
-        error_msg = str(ve)
-        if "Sign in to confirm you're not a bot" in error_msg:
-            error_msg = "YouTube vaqtinchalik blokladi. Iltimos, bir ozdan so'ng qayta urinib ko'ring yoki boshqa havola tashlang."
-        elif "Requested format is not available" in error_msg:
-            error_msg = "Siz so'ragan format ushbu video uchun mavjud emas."
-        raise HTTPException(status_code=400, detail=error_msg)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
-
 if __name__ == "__main__":
-    print("UltraSave Backend starting on http://127.0.0.1:8001")
-    uvicorn.run(app, host="127.0.0.1", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=8001)

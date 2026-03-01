@@ -670,11 +670,69 @@ h6 {
 }
 
 /* =========================
+   WARNING BANNER
+   ========================= */
+.warning-banner {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    animation: fadeInUp 0.8s var(--transition-bounce) 0.05s both;
+}
+
+.warning-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.warning-icon {
+    font-size: 1.8rem;
+    color: var(--color-4k);
+}
+
+.warning-text {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+}
+
+.warning-text strong {
+    color: var(--color-4k);
+}
+
+/* =========================
    RESPONSIVE DESIGN
    ========================= */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+    .app-container {
+        padding: 1.5rem 1rem;
+    }
+
     .logo {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
+    }
+
+    .main-logo-icon {
+        font-size: 3rem;
+    }
+
+    .glass-panel {
+        padding: 1.5rem;
+    }
+
+    .quality-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
     }
 
     .search-box {
@@ -684,15 +742,33 @@ h6 {
     .btn-primary {
         width: 100%;
         justify-content: center;
+        height: 3.2rem;
+    }
+
+    .input-wrapper input {
+        padding: 1rem 1rem 1rem 3rem;
+    }
+
+    .input-wrapper .icon {
+        left: 1rem;
+    }
+
+    .quality-grid {
+        grid-template-columns: 1fr;
     }
 
     .video-preview {
         flex-direction: column;
-        align-items: flex-start;
+        text-align: center;
     }
 
     .thumbnail-wrapper {
         width: 100%;
         height: 160px;
+    }
+
+    .warning-content {
+        flex-direction: column;
+        text-align: center;
     }
 }

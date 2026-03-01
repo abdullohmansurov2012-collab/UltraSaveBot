@@ -670,35 +670,38 @@ h6 {
 }
 
 /* =========================
-   WARNING BANNER
+   WARNING BANNER (RED DESIGN)
    ========================= */
-.warning-banner {
-    background: rgba(245, 158, 11, 0.1);
-    border: 1px solid rgba(245, 158, 11, 0.2);
+.warning-banner.red-banner {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
     border-radius: 16px;
-    padding: 1rem 1.5rem;
-    animation: fadeInUp 0.8s var(--transition-bounce) 0.05s both;
+    padding: 1.2rem 1.5rem;
+    animation: fadeInUp 0.8s var(--transition-bounce) 0.1s both;
+    margin-top: 1rem;
 }
 
 .warning-content {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.2rem;
 }
 
 .warning-icon {
-    font-size: 1.8rem;
-    color: var(--color-4k);
+    font-size: 2rem;
+    color: #ef4444;
+    filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.4));
 }
 
 .warning-text {
     font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
 }
 
 .warning-text strong {
-    color: var(--color-4k);
+    color: #ef4444;
+    font-weight: 800;
 }
 
 /* =========================
@@ -760,6 +763,7 @@ h6 {
     .video-preview {
         flex-direction: column;
         text-align: center;
+        gap: 1rem;
     }
 
     .thumbnail-wrapper {
@@ -770,5 +774,6 @@ h6 {
     .warning-content {
         flex-direction: column;
         text-align: center;
+        gap: 0.8rem;
     }
 }

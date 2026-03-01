@@ -43,28 +43,32 @@ async def download_video(req: VideoRequest):
         return data
     except ValueError as ve:
         error_msg = str(ve)
-        if "Sign in to confirm you're not a bot" in error_msg:
-            error_msg = "YouTube vaqtinchalik blokladi. Iltimos, bir ozdan so'ng qayta urinib ko'ring yoki boshqa havola tashlang."
-        elif "Requested format is not available" in error_msg:
+        # Bosh harflarga sezgirlikni yo'qotish va aniqroq tekshirish
+        if "sign in to confirm you're not a bot" in error_msg.lower() or "bot" in error_msg.lower():
+            error_msg = "YouTube xavfsizlik tizimi (bot detection) bizning serverimizni blokladi. Iltimos, boshqa havola tashlab ko'ring yoki bir ozdan so'ng qayta urinib ko'ring."
+        elif "requested format is not available" in error_msg.lower():
             error_msg = "Siz so'ragan format ushbu video uchun mavjud emas."
         raise HTTPException(status_code=400, detail=error_msg)
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        print(f"Server Error: {e}")
+        raise HTTPException(status_code=500, detail="Serverda xatolik yuz berdi. Iltimos, keyinroq urinib ko'ring.")
 
 def extract_video_info(url: str):
-    # Improved options to get more formats and better luck with merged streams
+    # YouTube uchun maxsus sozlamalar
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
-        # Using different clients can sometimes reveal merged formats and bypass bot detection
+        'nocheckcertificate': True,
+        'ignoreerrors': False,
+        'logtostderr': False,
         'extractor_args': {
             'youtube': {
-                'player_client': ['android', 'ios', 'web', 'mweb', 'tv'],
+                'player_client': ['ios', 'android', 'mweb'],
                 'player_skip': ['webpage', 'configs'],
             }
         },
         'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.5',
         }
@@ -72,6 +76,10 @@ def extract_video_info(url: str):
     
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            # YouTube Shorts uchun havolani to'g'irlash (ba'zida yordam beradi)
+            if 'youtube.com/shorts/' in url:
+                url = url.replace('youtube.com/shorts/', 'youtube.com/watch?v=')
+            
             info = ydl.extract_info(url, download=False)
             
             title = info.get('title', 'Video')

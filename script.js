@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
         qualityList.innerHTML = '';
 
         try {
-            // Using our robust local Python backend
-            const apiUrl = 'http://127.0.0.1:8001/api/download';
+            // Using a relative path so it works everywhere (Local and Render)
+            const apiUrl = '/api/download';
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
